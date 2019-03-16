@@ -1,0 +1,15 @@
+<form class="col-md-6 offset-md-3" id="form" action="/retrive" method="POST">
+<h1>Reset Password</h1>
+
+  <div class="form-group">
+    <label for="email">Email address</label>
+    <input name="email"  type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+    </div>
+
+{{#if msgError}}
+      <div class="alert alert-danger">{{ msgError }}</div>
+    {{/if}}
+
+
+  <button class="btn btn-primary">Submit</button>
+</form>

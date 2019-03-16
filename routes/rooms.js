@@ -48,7 +48,7 @@ router.get("/", (req, res, next) => {
       if (req.user && req.user._id.equals(room.owner.id)  ) { room.owned = true }
       
     })
-      res.render("rooms", { rooms, msgError: req.flash('error') });
+      res.render("rooms", { rooms, msgError: req.flash('error'),msgSuc:req.flash('success')  });
       
     })
     .catch(err => {

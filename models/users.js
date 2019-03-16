@@ -23,7 +23,8 @@ const userSchema = new Schema(
       enum: ["Pending", "Active"],
       default: "Pending"
     },
-    confirmationCode: String
+    confirmationCode: String,
+    resetPasswordCode: String,
   },
   {
     timestamps: true

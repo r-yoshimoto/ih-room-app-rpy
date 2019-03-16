@@ -266,4 +266,126 @@ router.post("/change-password", (req, res, next) => {
 
 });
 
+router.get("/retrive", (req, res, next) => {
+  res.render("auth/retrive")
+});
+
+router.post("/retrive", (req, res, next) => {
+  const {email} = req.body;
+
+  const characters =
+  "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+let resetPasswordCode = "";
+for (let i = 0; i < 25; i++) {
+  resetPasswordCode +=
+    characters[Math.floor(Math.random() * characters.length)];
+}
+
+  User.findOneAndUpdate({email},{ $set: {resetPasswordCode: resetPasswordCode }},
+  {new: true })
+  .then(user => {
+    if ((user)){ 
+
+      let transporter = nodemailer.createTransport({
+        host: "smtp.mailtrap.io",
+        port: 2525,
+        auth: {
+          user: process.env.NODEMAILER_USER,
+          pass: process.env.NODEMAILER_PASS
+        }
+      });
+      transporter
+        .sendMail({
+          from: '"My Awesome Project 👻" <noreply@project.com>',
+          to: user.email,
+          subject: "[FORGOT PASSWORD] email confirmation required",
+          // text: message,
+          html: `please click <a href="http://localhost:3000/retrive/${resetPasswordCode}">here</a>
+          `
+        })
+        .then(info => console.log("nodemailer success -->", info))
+        .catch(error => console.log(error));
+
+    req.flash('success', "An e-mail with instruction have been send!")
+    res.redirect("/login");
+      } 
+  })
+  .catch(err => { throw new Error(err)})
+});
+
+router.get("/retrive/:resetPasswordCode", (req, res, next) => {
+  
+  const { resetPasswordCode } = req.params;
+
+  User.findOne({resetPasswordCode},
+    // traz o dado atualizado pq se nao ele fica cached o antigo
+    {new: true })
+  .then(user => {
+    if ((user)){ 
+    
+      
+
+    res.render("auth/retrive-new-password", {code: resetPasswordCode});
+    
+     } else {
+     
+      req.flash('error', "Invalid confirmation code")
+      res.redirect("/login");
+    
+    }
+  })
+  .catch(err => { throw new Error(err)})
+  
+});
+
+router.post("/retrive/change-password", (req, res, next) => {
+  
+  const { resetPasswordCode, password, passwordCheck } = req.body;
+
+  if (password == "" || passwordCheck == "" ) {
+    res.render("auth/retrive-new-password", {
+      msgError: `Please fill all fields`, code: resetPasswordCode
+    });
+    return;
+  }
+ 
+  if (password !== passwordCheck) {
+    res.render("auth/retrive-new-password", {
+      msgError: `New password doesn't match`, code: resetPasswordCode
+    });
+    return;
+  }
+
+  const salt = bcrypt.genSaltSync(bcryptSalt);
+  const hashPass = bcrypt.hashSync(password, salt);
+
+
+  User.findOneAndUpdate({resetPasswordCode},{$set: {resetPasswordCode: "", password: hashPass}},
+    {new: true })
+  .then(user => {
+    if ((user)){ 
+    
+      req.flash('success', "Password changed, grats")
+
+      req.body.email = user.email;
+      req.body.password = password;
+
+      passport.authenticate("local", {
+        successRedirect: "/rooms",
+        failureRedirect: "/login",
+        failureFlash: true,
+        passReqToCallback: true
+      })(req, res, next)
+
+     } else {
+     
+      req.flash('error', "Invalid confirmation code")
+      res.redirect("/login");
+    
+    }
+  })
+  .catch(err => { throw new Error(err)})
+  
+});
+
 module.exports = router;
