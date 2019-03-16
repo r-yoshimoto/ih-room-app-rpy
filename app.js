@@ -7,6 +7,11 @@ const logger = require("morgan");
 const express = require("express");
 const hbs = require("hbs");
 const mongoose = require("mongoose");
+const passport = require("./services/passport")
+const app = express();
+const flash = require("connect-flash");
+
+app.use(flash());
 
 mongoose
   .connect(process.env.MONGODB_URI, { useNewUrlParser: true })
@@ -19,7 +24,7 @@ mongoose
     console.error("Error connecting to mongo", err);
   });
 
-const app = express();
+
 
 app.use(logger("dev"));
 app.use(bodyParser.json());
@@ -30,7 +35,20 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use(passport)
+
+
 const siteRoutes = require("./routes/index");
 app.use("/", siteRoutes);
+
+const usersRoutes = require("./routes/users");
+app.use("/users", usersRoutes);
+
+const roomsRoutes = require("./routes/rooms");
+app.use("/rooms", roomsRoutes);
+
+const authRoutes = require("./routes/auth");
+app.use("/", authRoutes);
+
 
 module.exports = app;

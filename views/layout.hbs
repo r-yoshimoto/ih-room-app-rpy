@@ -7,11 +7,12 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>{{title}}</title>
 
-  <link href="stylesheets/reset.css" type="text/css" rel="stylesheet">
+  <link href="../stylesheets/reset.css" type="text/css" rel="stylesheet">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <link rel="stylesheet" href="/stylesheets/style.css" />
-
+  <link rel="stylesheet" href="../stylesheets/style.css" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  
 </head>
 
 <body>
@@ -28,17 +29,21 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" href="#">Rooms</a>
+          <a class="nav-link" href="/rooms">Rooms</a>
         </li>
+{{#if currentUser}}
         <li class="nav-item">
-          <a class="nav-link" href="#">Users</a>
-        </li>
+          <a class="nav-link" href="/users">Community</a>
+        </li>{{/if}}
       </ul>
-
-      <button type="button" class="mr-1 btn btn-primary">Login</button>
-      <span class="h5 m-1 p-1 align-bottom">Hi, {UsernamePlaceHolder} </span>
-      <button type="button" class="mr-1 btn btn-secondary">Edit Profile</button>
-
+{{#if currentUser}}
+      <span class="h5 m-1 p-1 align-bottom">Hi, {{currentUser.fullName}}  </span>
+      <a class="mr-1 btn btn-secondary" href="/users/edit" role="button">Edit Profile</a>
+      <a class="mr-1 btn btn-dark" href="/logout" role="button">Logout</a>
+      
+            {{else}}
+      <a class="mr-1 btn btn-primary" href="/login" role="button">Login</a>
+    {{/if}}
     </div>
   </nav>
 
@@ -53,7 +58,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
-  <script src="/javascripts/script.js"></script>
+  <script src="../javascripts/script.js"></script>
 
 </body>
 

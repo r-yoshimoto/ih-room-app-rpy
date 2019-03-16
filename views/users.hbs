@@ -1,0 +1,15 @@
+<h1>Community</h1>
+
+<div class="container">
+<div class="row">
+{{#each users}}
+<div class="col-3 py-2">
+  <div class="card">
+    <img src="{{imageUrl}}" class="card-img-top">
+    <div class="card-body">
+      <h5 class="card-title">{{fullName}}</h5>    </div>
+  </div>
+</div>
+{{/each}}
+</div>
+</div>

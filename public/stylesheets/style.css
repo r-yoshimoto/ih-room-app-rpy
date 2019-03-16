@@ -1,0 +1,15 @@
+#map {
+  width: 100%;
+  height: 400px;
+}
+
+.roomDetailImg{
+  height:500px;
+   background-size:cover;
+    background-position:center bottom
+
+}
+
+.roomMap {
+  height: 300px
+}

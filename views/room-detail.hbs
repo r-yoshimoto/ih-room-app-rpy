@@ -1,0 +1,89 @@
+{{#with room}}
+{{#if ../msgSuc}}
+      <div class="alert alert-success">{{ ../msgSuc }}</div>
+    {{/if}}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-4 p-0 bg-secondary text-white">
+<h1 id="roomsDetail" data-id={{_id}}>"{{name}}"</h1>
+<h2>Presentation</h2>
+<h5>{{description}}</h5>
+    </div>
+    <div class="col-8 p-0 roomDetailImg" style="background-image: url({{imageUrl}})">
+
+    </div>
+
+</div>
+
+<h2>Location</h2>
+<div id="map" class="roomMap"></div>
+
+<div class="card-columns mt-2">
+<form id="form" action="/rooms/reviews/{{_id}}" method="POST">
+<h2>Reviews</h2>
+
+{{#if ../msgError}}
+      <div class="alert alert-danger">{{../msgError }}</div>
+    {{/if}}
+
+  <div class="form-group">
+    <label for="name">Rate this room!</label>
+ <div class="form-check form-check-inline">
+  <input class="form-check-input" type="radio" name="rating" id="inlineRadio1" value="1">
+  <label class="form-check-label" for="inlineRadio1">1</label>
+</div>
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="radio" name="rating" id="inlineRadio2" value="2">
+  <label class="form-check-label" for="inlineRadio2">2</label>
+</div>
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="radio" name="rating" id="inlineRadio3" value="3">
+  <label class="form-check-label" for="inlineRadio3">3</label>
+</div>
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="radio" name="rating" id="inlineRadio4" value="4">
+  <label class="form-check-label" for="inlineRadio4">4</label>
+</div>
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="radio" name="rating" id="inlineRadio5" value="5">
+  <label class="form-check-label" for="inlineRadio5">5</label>
+</div>
+   </div>
+
+  <div class="form-group">
+    <label for="comment">Comment</label>
+    <br><textarea name="comment" class="form-control" placeholder="Be constructive!"></textarea>
+  </div>
+
+    <button class="mb-3 btn btn-success">Post Comment</button>
+
+
+
+{{#each reviews}}
+
+
+
+  <div class="card bg-primary text-white text-center p-3">
+    <blockquote class="blockquote mb-0">
+      <p>"{{comment}}"</p>
+      <footer class="text-right blockquote-footer text-white">
+        <small>
+          Written by <cite>{{user.fullName}}</cite>
+          <br>Rated this room for {{rating}}
+        </small>
+      </footer>
+    </blockquote>
+  </div>
+
+{{/each}}
+</div>
+
+<!--  Axios CDN  -->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!--  Google Maps Key  -->
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB4GdY-87kMk9MLvVAswfnWd_WsVjhAT7g">
+  </script>
+  <!--  Connect main.js  -->
+  <script type="text/javascript" src="/javascripts/main.js"></script>
+  {{/with}}

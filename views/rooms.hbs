@@ -1,0 +1,41 @@
+<h1 id="rooms">Rooms</h1> {{#if currentUser}}<a href="rooms/add" class="btn btn-success">Add your room</a>{{/if}}
+
+{{#if msgError}} <div class="alert alert-danger">{{{msgError}}}</div> {{/if}}
+
+<div id="map"></div>
+
+<div class="container">
+<div class="row">
+{{#each rooms}}
+<div class="col-3 py-2">
+  <div class="card">
+    <img src="{{imageUrl}}" class="card-img-top">
+    <div class="card-body">
+      <h5 class="card-title">{{name}}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">{{owner.fullName}} {{#if ratings}}- <span class = "rating">{{ratings}}</span>{{/if}}</h6>
+      <p class="card-text">{{description}}</p>
+    </div>
+    <div class="card-footer">
+      <small class="text-muted float-right">
+        <a href="rooms/{{_id}}" class="btn btn-success">Detail</a>
+        {{#if owned}}
+        <a href="#" class="btn btn-info">Edit</a>
+      <a href="rooms/delete/{{_id}}" class="btn btn-danger">Delete</a>
+      {{/if}}
+      </small>
+    </div>
+  </div>
+</div>
+{{/each}}
+</div>
+</div>
+
+
+<!--  Axios CDN  -->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!--  Google Maps Key  -->
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB4GdY-87kMk9MLvVAswfnWd_WsVjhAT7g">
+  </script>
+  <!--  Connect main.js  -->
+  <script type="text/javascript" src="/javascripts/main.js"></script>
